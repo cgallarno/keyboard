@@ -165,7 +165,7 @@ This setup is honed and tested with the following dependencies.
 
 - macOS Sequoia, 15.7
 - [Karabiner-Elements 15.5.0][karabiner]
-- [Hammerspoon 0.9.100][hammerspoon]
+- [Hammerspoon 1.0.0][hammerspoon]
 
 ## Installation
 
