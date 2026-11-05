@@ -29,8 +29,8 @@ ln -sfn "$PWD/omarchy/bin/keyboard-markdown-wrap" ~/.local/bin/keyboard-markdown
 if ! cmp -s omarchy/keyd/default.conf /etc/keyd/default.conf; then
   [[ -f /etc/keyd/default.conf ]] && sudo cp /etc/keyd/default.conf "/etc/keyd/default.conf.bak.$(date +%s)"
   sudo install -m644 omarchy/keyd/default.conf /etc/keyd/default.conf
-  sudo systemctl enable --now keyd
-  sudo keyd reload
+  sudo systemctl enable keyd
+  sudo systemctl restart keyd
 fi
 
 hyprctl reload >/dev/null
