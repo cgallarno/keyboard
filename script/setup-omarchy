@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Omarchy (Linux) counterpart of script/setup. Safe to run more than once.
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+command -v hyprctl >/dev/null || (echo "Hyprland is required" && exit 1)
+command -v keyd >/dev/null || (echo "keyd is required: omarchy pkg add keyd" && exit 1)
+
+# Hyprland bindings: link omarchy/hypr into ~/.config/hypr/keyboard and load it
+# after Omarchy's defaults and the personal bindings.lua.
+ln -sfn "$PWD/omarchy/hypr" ~/.config/hypr/keyboard
+
+hyprland_config=~/.config/hypr/hyprland.lua
+if ! grep -sq 'require("hypr.keyboard.init")' "$hyprland_config"; then
+  cp "$hyprland_config" "$hyprland_config.bak.$(date +%s)"
+  sed -i '/^require("hypr.bindings")$/a require("hypr.keyboard.init") -- Keyboard from https://github.com/cgallarno/keyboard' "$hyprland_config"
+  grep -q 'require("hypr.keyboard.init")' "$hyprland_config" ||
+    (echo "Couldn't find require(\"hypr.bindings\") in $hyprland_config; add require(\"hypr.keyboard.init\") yourself" && exit 1)
+fi
+
+# Markdown Mode helper.
+mkdir -p ~/.local/bin
+ln -sfn "$PWD/omarchy/bin/keyboard-markdown-wrap" ~/.local/bin/keyboard-markdown-wrap
+
+# keyd runs as root and reads /etc/keyd, so copy the config rather than link it.
+if ! cmp -s omarchy/keyd/default.conf /etc/keyd/default.conf; then
+  [[ -f /etc/keyd/default.conf ]] && sudo cp /etc/keyd/default.conf "/etc/keyd/default.conf.bak.$(date +%s)"
+  sudo install -m644 omarchy/keyd/default.conf /etc/keyd/default.conf
+  sudo systemctl enable --now keyd
+  sudo keyd reload
+fi
+
+hyprctl reload >/dev/null
+errors=$(hyprctl configerrors)
+if [[ -n $errors && $errors != "no errors" ]]; then
+  echo "Hyprland config errors:"
+  echo "$errors"
+  exit 1
+fi
+
+echo "Done! Keep the Keychron in Mac mode."

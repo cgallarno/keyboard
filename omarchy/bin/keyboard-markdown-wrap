@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Wrap the selected text in Markdown. Omarchy counterpart of
+# hammerspoon/markdown.lua, called from omarchy/hypr/markdown.lua.
+#
+# Usage: keyboard-markdown-wrap <bold|italic|strike|code|link> <copy-mods> <copy-key> <paste-mods> <paste-key>
+#
+# Copies the selection, pastes the wrapped text over it, then restores the
+# original clipboard. "link" uses the original clipboard as the URL.
+
+set -u
+
+style="$1"
+copy_mods="$2"
+copy_key="$3"
+paste_mods="$4"
+paste_key="$5"
+
+send() {
+  hyprctl dispatch "hl.dsp.send_key_state({ mods = \"$1\", key = \"$2\", state = \"down\" })" >/dev/null
+  sleep 0.05
+  hyprctl dispatch "hl.dsp.send_key_state({ mods = \"$1\", key = \"$2\", state = \"up\" })" >/dev/null
+}
+
+original=$(wl-paste --no-newline 2>/dev/null)
+
+send "$copy_mods" "$copy_key"
+sleep 0.2
+selection=$(wl-paste --no-newline 2>/dev/null)
+
+case "$style" in
+  bold) wrapped="**$selection**" ;;
+  italic) wrapped="*$selection*" ;;
+  strike) wrapped="~~$selection~~" ;;
+  code) wrapped="\`$selection\`" ;;
+  link) wrapped="[$selection]($original)" ;;
+  *) echo "keyboard-markdown-wrap: unknown style: $style" >&2; exit 1 ;;
+esac
+
+printf '%s' "$wrapped" | wl-copy
+sleep 0.05
+send "$paste_mods" "$paste_key"
+sleep 0.2
+printf '%s' "$original" | wl-copy
