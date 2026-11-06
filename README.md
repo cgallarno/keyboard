@@ -183,6 +183,73 @@ This setup is honed and tested with the following dependencies.
 
 3. You'll be [prompted to allow Karabiner-Elements to load its kernel extension](https://karabiner-elements.pqrs.org/docs/getting-started/installation/#open-karabiner-elements-preferences), followed by a [flurry of prompts related to input monitoring](https://karabiner-elements.pqrs.org/docs/getting-started/installation/#grant-input-monitoring-to-karabiner-elements-processes). Follow the prompts to upgrade your life.
 
+## Omarchy (Linux)
+
+The same keyboard on [Omarchy](https://omarchy.org/) (Arch + Hyprland), so muscle memory carries between machines.
+[keyd](https://github.com/rvaiya/keyd) plays the part of Karabiner-Elements and Hyprland's Lua config plays the part of Hammerspoon.
+
+| Mac | Omarchy |
+|---|---|
+| `karabiner/karabiner.json` | `omarchy/keyd/default.conf` |
+| `hammerspoon/init.lua` | `omarchy/hypr/init.lua` |
+| `hammerspoon/windows.lua` | `omarchy/hypr/windows.lua` |
+| `hammerspoon/hyper.lua`, `hyper-apps-defaults.lua` | `omarchy/hypr/hyper.lua`, `hyper-apps-defaults.lua` |
+| `hammerspoon/markdown.lua` | `omarchy/hypr/markdown.lua` + `omarchy/bin/keyboard-markdown-wrap` |
+| `hammerspoon/delete-words.lua` | `omarchy/hypr/delete-words.lua` |
+| macOS itself | `omarchy/hypr/cmd.lua`, `omarchy/hypr/screenshots.lua` |
+
+Keep the keyboard in **Mac mode** (bottom row: control, option, command, space). Linux sees command as Super and option as Alt.
+
+### Everything above works the same
+
+Caps lock (tap for escape, hold for control), (S)uper (D)uper Mode, Window Layout Mode (<kbd>control</kbd> + <kbd>s</kbd>), Markdown Mode (<kbd>control</kbd> + <kbd>m</kbd>), Hyper (right command) app launching, and the word/line deletes.
+In Window Layout Mode, Hyprland tiles windows, so <kbd>h</kbd>/<kbd>j</kbd>/<kbd>k</kbd>/<kbd>l</kbd> swap the window with its neighbour instead of snapping it to half the screen. Extra Omarchy keys in the mode: <kbd>f</kbd> tiled full screen, <kbd>/</kbd> toggle split, <kbd>p</kbd> pop out, <kbd>t</kbd> toggle layout, <kbd>g</kbd> toggle group, <kbd>m</kbd> show scratchpad, <kbd>shift</kbd> + <kbd>h</kbd>/<kbd>j</kbd>/<kbd>k</kbd>/<kbd>l</kbd> resize.
+
+### Command behaves like a Mac
+
+Omarchy normally uses Super (command) for window management. Here, <kbd>command</kbd> + key sends <kbd>control</kbd> + key to the app, so the usual Mac shortcuts work in every app: copy/paste/cut, select all, undo/redo, save, find, new/close/reopen tab, <kbd>command</kbd> + <kbd>1</kbd>–<kbd>9</kbd>, <kbd>command</kbd> + <kbd>[</kbd>/<kbd>]</kbd> back/forward, <kbd>command</kbd> + <kbd>shift</kbd> + <kbd>[</kbd>/<kbd>]</kbd> previous/next tab, zoom, <kbd>command</kbd> + arrows to line/document start and end (add <kbd>shift</kbd> to select), <kbd>command</kbd> + <kbd>delete</kbd> to delete to line start, <kbd>option</kbd> + arrows by word.
+
+In terminals only the keys that mean something are forwarded (copy, paste, find, tabs, zoom, <kbd>command</kbd> + <kbd>k</kbd> to clear). <kbd>command</kbd> + <kbd>z</kbd> and friends do nothing there, so they can't suspend a process.
+
+Other Mac keys:
+
+- <kbd>command</kbd> + <kbd>q</kbd> closes the window, <kbd>command</kbd> + <kbd>m</kbd> minimizes it (to the scratchpad)
+- <kbd>command</kbd> + <kbd>tab</kbd> switches windows, <kbd>command</kbd> + <kbd>control</kbd> + <kbd>←</kbd>/<kbd>→</kbd> switches workspaces
+- <kbd>command</kbd> + <kbd>control</kbd> + <kbd>f</kbd> full screen
+- <kbd>command</kbd> + <kbd>space</kbd> Omarchy menu (Spotlight)
+- <kbd>command</kbd> + <kbd>shift</kbd> + <kbd>3</kbd> screenshot the screen, <kbd>command</kbd> + <kbd>shift</kbd> + <kbd>4</kbd> drag for an area or click a window, <kbd>command</kbd> + <kbd>shift</kbd> + <kbd>5</kbd> capture menu (incl. screen recording). Add <kbd>control</kbd> to copy to the clipboard instead of saving.
+- <kbd>command</kbd> + <kbd>shift</kbd> + <kbd>/</kbd> lists every keybinding
+
+### Where the Omarchy window keys went
+
+| Omarchy default | Now |
+|---|---|
+| Super + W close window | <kbd>command</kbd> + <kbd>q</kbd> |
+| Super + F full screen | <kbd>command</kbd> + <kbd>control</kbd> + <kbd>f</kbd>, or Window Layout Mode <kbd>return</kbd> (maximize) |
+| Super + T float, J split, O pop out, L layout, G group, S scratchpad | Window Layout Mode <kbd>space</kbd>, <kbd>/</kbd>, <kbd>p</kbd>, <kbd>t</kbd>, <kbd>g</kbd>, <kbd>m</kbd> |
+| Super + arrows focus | Hyper + <kbd>h</kbd>/<kbd>j</kbd>/<kbd>k</kbd>/<kbd>l</kbd> |
+| Super + Shift + arrows swap | Window Layout Mode <kbd>h</kbd>/<kbd>j</kbd>/<kbd>k</kbd>/<kbd>l</kbd> |
+| Super + 1–9 workspaces | Hyper + <kbd>1</kbd>–<kbd>9</kbd> |
+| Super + Tab workspaces | <kbd>command</kbd> + <kbd>control</kbd> + <kbd>←</kbd>/<kbd>→</kbd> |
+| Super + Return terminal, Super + Shift + F/N file manager/editor | Hyper + <kbd>t</kbd>, <kbd>f</kbd>, <kbd>e</kbd> |
+| Super + K keybindings | <kbd>command</kbd> + <kbd>shift</kbd> + <kbd>/</kbd> |
+| Super + Shift + / passwords | <kbd>command</kbd> + <kbd>\\</kbd> |
+| Super + , dismiss notification, Super + Backspace transparency, Super + / scaling | Hyper + <kbd>,</kbd>, <kbd>delete</kbd>, <kbd>/</kbd> |
+
+Everything else Omarchy binds with Super + Ctrl or Super + Shift + Alt is unchanged.
+
+### Installation
+
+```sh
+git clone https://github.com/cgallarno/keyboard.git ~/Development/keyboard
+cd ~/Development/keyboard
+script/setup-omarchy
+```
+
+This links `omarchy/hypr` to `~/.config/hypr/keyboard`, loads it from `~/.config/hypr/hyprland.lua`, and installs the keyd config to `/etc/keyd/` (asks for sudo). To undo the Hyprland part, delete the `require("hypr.keyboard.init")` line from `hyprland.lua`.
+
+To use your own Hyper apps, copy `omarchy/hypr/hyper-apps-defaults.lua` to `omarchy/hypr/hyper-apps.lua` and edit it.
+
 [customize]: http://dictionary.reference.com/browse/customize
 [don't-make-me-think]: http://en.wikipedia.org/wiki/Don't_Make_Me_Think
 [karabiner]: https://github.com/tekezo/Karabiner-Elements

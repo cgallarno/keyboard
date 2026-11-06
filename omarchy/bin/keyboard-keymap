@@ -1,0 +1,76 @@
+#!/bin/bash
+
+# Show a searchable cheat sheet of the custom keymap: the keyd layers
+# (omarchy/keyd/default.conf), which Omarchy's own keybindings menu can't see,
+# plus the modes and shortcuts from omarchy/hypr. Bound to Hyper+M and S+D+/.
+#
+# Keep this list in step with those files when they change.
+
+keymap() {
+  cat <<'EOF'
+S+D (hold)                → Super Duper mode
+S+D + H / J / K / L       → Left / Down / Up / Right
+S+D + F + H / L           → Line start / end
+S+D + F + J / K           → Document end / start
+S+D + Space + arrows      → Select while moving
+S+D + A + H / L           → Previous / next word
+S+D + A + J / K           → Page down / up
+S+D + I / O               → Previous / next tab
+S+D + U / P               → First / last tab
+S+D + /                   → This keymap
+CAPS LOCK                 → Tap for Escape, hold for Control
+RIGHT CMD                 → Hyper (Super+Ctrl+Alt+Shift)
+HYPER + A                 → Spotify
+HYPER + B                 → Browser
+HYPER + C / S             → Slack
+HYPER + E                 → Editor
+HYPER + F                 → Files
+HYPER + O                 → Obsidian
+HYPER + T                 → Terminal
+HYPER + H / J / K / L     → Focus window left / down / up / right
+HYPER + 1–0               → Switch to workspace
+HYPER + M                 → This keymap
+HYPER + COMMA             → Dismiss last notification
+HYPER + BACKSPACE         → Toggle window transparency
+HYPER + SLASH             → Monitor scaling up
+CTRL + S                  → Window mode (then one key)
+CTRL + S, H / J / K / L   → Move window left / down / up / right
+CTRL + S, SHIFT + H/J/K/L → Resize window
+CTRL + S, RETURN          → Maximize window
+CTRL + S, F               → Tiled full screen
+CTRL + S, SPACE           → Float and center window
+CTRL + S, N / ← / →       → Window to next / left / right monitor
+CTRL + S, /               → Toggle window split
+CTRL + S, P               → Pop window out
+CTRL + S, T               → Toggle workspace layout
+CTRL + S, G               → Toggle window grouping
+CTRL + S, M               → Show scratchpad
+CTRL + M                  → Markdown mode (then one key)
+CTRL + M, B / I / S / C   → Bold / italic / strikethrough / code
+CTRL + M, L               → Link from clipboard URL
+CMD + A–Z                 → Ctrl+key in apps (Mac-style)
+CMD + Q                   → Close window
+CMD + M                   → Minimize to scratchpad
+CMD + 1–9                 → Pick tab
+CMD + [ / ]               → Back / forward
+CMD + SHIFT + [ / ]       → Previous / next tab
+CMD + ← / →               → Line start / end
+CMD + ↑ / ↓               → Document start / end
+CMD + BACKSPACE           → Delete to line start
+CMD + TAB                 → Next window
+CMD + CTRL + ← / →        → Previous / next workspace
+CMD + CTRL + F            → Full screen
+CMD + SHIFT + 3 / 4 / 5   → Screenshot screen / area / capture menu
+CMD + SHIFT + /           → All keybindings (Omarchy)
+OPTION + ← / →            → Previous / next word
+OPTION + BACKSPACE / H    → Delete previous word
+OPTION + L                → Delete next word
+CTRL + U / ;              → Delete to line start / end
+EOF
+}
+
+if [[ $1 == "--print" || $1 == "-p" ]]; then
+  keymap
+else
+  keymap | omarchy-menu-select 'Keymap' -- --width 800 --height 500 >/dev/null
+fi
