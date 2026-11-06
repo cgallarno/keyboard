@@ -1,4 +1,4 @@
--- Default keybindings for launching apps in Hyper Mode (Right Option + key).
+-- Default keybindings for launching apps in Hyper Mode (Right Cmd + key).
 -- Same idea as hammerspoon/hyper-apps-defaults.lua: Hyper+key focuses the app
 -- if it's open and launches it otherwise.
 --

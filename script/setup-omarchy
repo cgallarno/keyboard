@@ -21,9 +21,10 @@ if ! grep -sq 'require("hypr.keyboard.init")' "$hyprland_config"; then
     (echo "Couldn't find require(\"hypr.bindings\") in $hyprland_config; add require(\"hypr.keyboard.init\") yourself" && exit 1)
 fi
 
-# Markdown Mode helper.
+# Markdown Mode and keymap helpers.
 mkdir -p ~/.local/bin
 ln -sfn "$PWD/omarchy/bin/keyboard-markdown-wrap" ~/.local/bin/keyboard-markdown-wrap
+ln -sfn "$PWD/omarchy/bin/keyboard-keymap" ~/.local/bin/keyboard-keymap
 
 # keyd runs as root and reads /etc/keyd, so copy the config rather than link it.
 if ! cmp -s omarchy/keyd/default.conf /etc/keyd/default.conf; then

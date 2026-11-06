@@ -202,7 +202,7 @@ Keep the keyboard in **Mac mode** (bottom row: control, option, command, space).
 
 ### Everything above works the same
 
-Caps lock (tap for escape, hold for control), (S)uper (D)uper Mode, Window Layout Mode (<kbd>control</kbd> + <kbd>s</kbd>), Markdown Mode (<kbd>control</kbd> + <kbd>m</kbd>), Hyper (right option) app launching, and the word/line deletes.
+Caps lock (tap for escape, hold for control), (S)uper (D)uper Mode, Window Layout Mode (<kbd>control</kbd> + <kbd>s</kbd>), Markdown Mode (<kbd>control</kbd> + <kbd>m</kbd>), Hyper (right command) app launching, and the word/line deletes.
 In Window Layout Mode, Hyprland tiles windows, so <kbd>h</kbd>/<kbd>j</kbd>/<kbd>k</kbd>/<kbd>l</kbd> swap the window with its neighbour instead of snapping it to half the screen. Extra Omarchy keys in the mode: <kbd>f</kbd> tiled full screen, <kbd>/</kbd> toggle split, <kbd>p</kbd> pop out, <kbd>t</kbd> toggle layout, <kbd>g</kbd> toggle group, <kbd>m</kbd> show scratchpad, <kbd>shift</kbd> + <kbd>h</kbd>/<kbd>j</kbd>/<kbd>k</kbd>/<kbd>l</kbd> resize.
 
 ### Command behaves like a Mac

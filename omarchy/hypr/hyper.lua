@@ -1,6 +1,6 @@
 -- Hyper Mode: the Omarchy counterpart of hammerspoon/hyper.lua.
 --
--- keyd turns Right Option into Hyper (Super+Ctrl+Alt+Shift), like Karabiner
+-- keyd turns Right Cmd (or Right Option) into Hyper (Super+Ctrl+Alt+Shift), like Karabiner
 -- does on the Mac. Hyper+letter launches or focuses an app. Window-manager
 -- actions that Cmd took over live here too.
 --
@@ -32,6 +32,7 @@ for workspace = 1, 10 do
     hl.dsp.focus({ workspace = tostring(workspace) }))
 end
 
+o.bind(HYPER .. " + m", "Show keymap", "keyboard-keymap")
 o.bind(HYPER .. " + comma", "Dismiss last notification", "omarchy-shell notifications dismissOne")
 o.bind(HYPER .. " + BACKSPACE", "Toggle window transparency", "omarchy-hyprland-window-transparency-toggle")
 o.bind(HYPER .. " + SLASH", "Monitor scaling up", "omarchy-hyprland-monitor-scaling up")
